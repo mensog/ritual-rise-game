@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 
@@ -30,6 +31,11 @@ const CommunityRoute = CommunityRouteImport.update({
   path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JourneyRoute = JourneyRouteImport.update({
+  id: '/journey',
+  path: '/journey',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
 }
@@ -60,21 +68,31 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/community' | '/login' | '/register'
+  fullPaths:
+    '/' | '/analytics' | '/community' | '/journey' | '/login' | '/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/community' | '/login' | '/register'
-  id: '__root__' | '/' | '/analytics' | '/community' | '/login' | '/register'
+  to: '/' | '/analytics' | '/community' | '/journey' | '/login' | '/register'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/community'
+    | '/journey'
+    | '/login'
+    | '/register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   CommunityRoute: typeof CommunityRoute
+  JourneyRoute: typeof JourneyRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
 }
@@ -102,6 +120,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journey': {
+      id: '/journey'
+      path: '/journey'
+      fullPath: '/journey'
+      preLoaderRoute: typeof JourneyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -123,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   CommunityRoute: CommunityRoute,
+  JourneyRoute: JourneyRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
 }
