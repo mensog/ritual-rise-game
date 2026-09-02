@@ -15,6 +15,7 @@ import { Route as CommunityRouteImport } from './routes/community'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResilienceRouteImport } from './routes/resilience'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResilienceRoute = ResilienceRouteImport.update({
+  id: '/resilience',
+  path: '/resilience',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resilience': typeof ResilienceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resilience': typeof ResilienceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resilience': typeof ResilienceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/analytics' | '/community' | '/journey' | '/login' | '/register'
+    | '/'
+    | '/analytics'
+    | '/community'
+    | '/journey'
+    | '/login'
+    | '/register'
+    | '/resilience'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/community' | '/journey' | '/login' | '/register'
+  to:
+    | '/'
+    | '/analytics'
+    | '/community'
+    | '/journey'
+    | '/login'
+    | '/register'
+    | '/resilience'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/journey'
     | '/login'
     | '/register'
+    | '/resilience'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   JourneyRoute: typeof JourneyRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  ResilienceRoute: typeof ResilienceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resilience': {
+      id: '/resilience'
+      path: '/resilience'
+      fullPath: '/resilience'
+      preLoaderRoute: typeof ResilienceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   JourneyRoute: JourneyRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  ResilienceRoute: ResilienceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
