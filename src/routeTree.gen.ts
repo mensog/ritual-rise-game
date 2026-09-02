@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as FocusRouteImport } from './routes/focus'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -31,6 +32,11 @@ const AnalyticsRoute = AnalyticsRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FocusRoute = FocusRouteImport.update({
+  id: '/focus',
+  path: '/focus',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JourneyRoute = JourneyRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/focus': typeof FocusRoute
   '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/focus': typeof FocusRoute
   '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/focus': typeof FocusRoute
   '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/community'
+    | '/focus'
     | '/journey'
     | '/login'
     | '/register'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/community'
+    | '/focus'
     | '/journey'
     | '/login'
     | '/register'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/community'
+    | '/focus'
     | '/journey'
     | '/login'
     | '/register'
@@ -127,6 +139,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   CommunityRoute: typeof CommunityRoute
+  FocusRoute: typeof FocusRoute
   JourneyRoute: typeof JourneyRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/focus': {
+      id: '/focus'
+      path: '/focus'
+      fullPath: '/focus'
+      preLoaderRoute: typeof FocusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journey': {
@@ -199,6 +219,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   CommunityRoute: CommunityRoute,
+  FocusRoute: FocusRoute,
   JourneyRoute: JourneyRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
