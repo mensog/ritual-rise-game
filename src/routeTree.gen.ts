@@ -12,8 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as FocusRouteImport } from './routes/focus'
+import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResilienceRouteImport } from './routes/resilience'
+import { Route as SettingsRouteImport } from './routes/settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,6 +34,16 @@ const CommunityRoute = CommunityRouteImport.update({
   path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FocusRoute = FocusRouteImport.update({
+  id: '/focus',
+  path: '/focus',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JourneyRoute = JourneyRouteImport.update({
+  id: '/journey',
+  path: '/journey',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -40,43 +54,97 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResilienceRoute = ResilienceRouteImport.update({
+  id: '/resilience',
+  path: '/resilience',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/focus': typeof FocusRoute
+  '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resilience': typeof ResilienceRoute
+  '/settings': typeof SettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/focus': typeof FocusRoute
+  '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resilience': typeof ResilienceRoute
+  '/settings': typeof SettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/community': typeof CommunityRoute
+  '/focus': typeof FocusRoute
+  '/journey': typeof JourneyRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/resilience': typeof ResilienceRoute
+  '/settings': typeof SettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/community' | '/login' | '/register'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/community'
+    | '/focus'
+    | '/journey'
+    | '/login'
+    | '/register'
+    | '/resilience'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/community' | '/login' | '/register'
-  id: '__root__' | '/' | '/analytics' | '/community' | '/login' | '/register'
+  to:
+    | '/'
+    | '/analytics'
+    | '/community'
+    | '/focus'
+    | '/journey'
+    | '/login'
+    | '/register'
+    | '/resilience'
+    | '/settings'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/community'
+    | '/focus'
+    | '/journey'
+    | '/login'
+    | '/register'
+    | '/resilience'
+    | '/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   CommunityRoute: typeof CommunityRoute
+  FocusRoute: typeof FocusRoute
+  JourneyRoute: typeof JourneyRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  ResilienceRoute: typeof ResilienceRoute
+  SettingsRoute: typeof SettingsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -102,6 +170,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/focus': {
+      id: '/focus'
+      path: '/focus'
+      fullPath: '/focus'
+      preLoaderRoute: typeof FocusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/journey': {
+      id: '/journey'
+      path: '/journey'
+      fullPath: '/journey'
+      preLoaderRoute: typeof JourneyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -116,6 +198,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resilience': {
+      id: '/resilience'
+      path: '/resilience'
+      fullPath: '/resilience'
+      preLoaderRoute: typeof ResilienceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -123,8 +219,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   CommunityRoute: CommunityRoute,
+  FocusRoute: FocusRoute,
+  JourneyRoute: JourneyRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  ResilienceRoute: ResilienceRoute,
+  SettingsRoute: SettingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
