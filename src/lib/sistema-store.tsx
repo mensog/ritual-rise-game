@@ -598,8 +598,8 @@ export function SistemaProvider({ children }: { children: ReactNode }) {
           ...p.focus,
           mode: nextMode,
           cycle,
-          running: false,
-          endsAt: null,
+          running: p.focus.autoStart,
+          endsAt: p.focus.autoStart ? Date.now() + nextMin * 60 * 1000 : null,
           remaining: nextMin * 60,
         },
       };
