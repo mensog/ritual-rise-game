@@ -11,7 +11,14 @@ import {
 
 /* ---------------------------------- types --------------------------------- */
 
-export type Habit = { id: string; name: string; icon: string };
+export type Subtask = { id: string; title: string; done: boolean };
+export type Habit = {
+  id: string;
+  name: string;
+  icon: string;
+  note?: string;
+  subtasks?: Subtask[];
+};
 export type DayRating = { mood: number; motivation: number; note: string };
 export type FocusSession = {
   id: string;
@@ -60,6 +67,9 @@ type FocusState = {
   workMin: number;
   breakMin: number;
   longBreak: boolean;
+  longBreakMin: number;
+  cyclesBeforeLong: number;
+  autoStart: boolean;
   label: string;
   habitId: string | null;
   cycle: number;
@@ -317,6 +327,15 @@ type Store = {
   addHabit: (name: string, icon?: string) => void;
   renameHabit: (id: string, name: string) => void;
   removeHabit: (id: string) => void;
+  updateHabit: (id: string, patch: Partial<Omit<Habit, "id">>) => void;
+  addSubtask: (habitId: string, title: string) => void;
+  toggleSubtask: (habitId: string, subtaskId: string) => void;
+  renameSubtask: (habitId: string, subtaskId: string, title: string) => void;
+  removeSubtask: (habitId: string, subtaskId: string) => void;
+
+  stickers: string[];
+  addSticker: (src: string) => void;
+  removeSticker: (src: string) => void;
 
   checks: Record<string, boolean>;
   isChecked: (habitId: string, date: string) => boolean;
@@ -350,7 +369,21 @@ type Store = {
   pauseFocus: () => void;
   resetFocus: () => void;
   skipBreak: () => void;
-  configureFocus: (patch: Partial<Pick<FocusState, "workMin" | "breakMin" | "longBreak" | "label" | "habitId">>) => void;
+  configureFocus: (
+    patch: Partial<
+      Pick<
+        FocusState,
+        | "workMin"
+        | "breakMin"
+        | "longBreak"
+        | "longBreakMin"
+        | "cyclesBeforeLong"
+        | "autoStart"
+        | "label"
+        | "habitId"
+      >
+    >,
+  ) => void;
 
   flies: XpFly[];
   exportData: () => void;
@@ -379,6 +412,7 @@ type Persisted = {
   visibility: Visibility;
   xp: number;
   habits: Habit[];
+  stickers: string[];
   checks: Record<string, boolean>;
   ratings: Record<string, DayRating>;
   journeyDone: number;
@@ -432,6 +466,7 @@ const initial = (): Persisted => ({
   visibility: "private",
   xp: 640,
   habits: DEFAULT_HABITS,
+  stickers: [],
   checks: seedChecks(),
   ratings: seedRatings(),
   journeyDone: 4,
@@ -449,6 +484,9 @@ const initial = (): Persisted => ({
     workMin: 25,
     breakMin: 5,
     longBreak: true,
+    longBreakMin: 15,
+    cyclesBeforeLong: 4,
+    autoStart: false,
     label: "",
     habitId: null,
     cycle: 0,
@@ -473,7 +511,11 @@ export function SistemaProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) setS({ ...initial(), ...JSON.parse(raw) });
+      if (raw) {
+        const base = initial();
+        const saved = JSON.parse(raw) as Partial<Persisted>;
+        setS({ ...base, ...saved, focus: { ...base.focus, ...(saved.focus ?? {}) } });
+      }
     } catch {
       /* ignore */
     }
