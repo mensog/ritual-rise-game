@@ -574,8 +574,11 @@ export function SistemaProvider({ children }: { children: ReactNode }) {
     setS((p) => {
       const nextMode: SessionMode = wasWork ? "break" : "work";
       const cycle = wasWork ? p.focus.cycle + 1 : p.focus.cycle;
+      const every = Math.max(1, p.focus.cyclesBeforeLong);
       const breakLen =
-        p.focus.longBreak && cycle > 0 && cycle % 4 === 0 ? 15 : p.focus.breakMin;
+        p.focus.longBreak && cycle > 0 && cycle % every === 0
+          ? p.focus.longBreakMin
+          : p.focus.breakMin;
       const nextMin = nextMode === "work" ? p.focus.workMin : breakLen;
       return {
         ...p,
@@ -654,6 +657,72 @@ export function SistemaProvider({ children }: { children: ReactNode }) {
     renameHabit: (id, name) =>
       setS((p) => ({ ...p, habits: p.habits.map((h) => (h.id === id ? { ...h, name } : h)) })),
     removeHabit: (id) => setS((p) => ({ ...p, habits: p.habits.filter((h) => h.id !== id) })),
+    updateHabit: (id, patch) =>
+      setS((p) => ({
+        ...p,
+        habits: p.habits.map((h) => (h.id === id ? { ...h, ...patch } : h)),
+      })),
+    addSubtask: (habitId, title) =>
+      setS((p) => ({
+        ...p,
+        habits: p.habits.map((h) =>
+          h.id === habitId
+            ? {
+                ...h,
+                subtasks: [
+                  ...(h.subtasks ?? []),
+                  { id: crypto.randomUUID(), title, done: false },
+                ],
+              }
+            : h,
+        ),
+      })),
+    toggleSubtask: (habitId, subtaskId) =>
+      setS((p) => ({
+        ...p,
+        habits: p.habits.map((h) =>
+          h.id === habitId
+            ? {
+                ...h,
+                subtasks: (h.subtasks ?? []).map((t) =>
+                  t.id === subtaskId ? { ...t, done: !t.done } : t,
+                ),
+              }
+            : h,
+        ),
+      })),
+    renameSubtask: (habitId, subtaskId, title) =>
+      setS((p) => ({
+        ...p,
+        habits: p.habits.map((h) =>
+          h.id === habitId
+            ? {
+                ...h,
+                subtasks: (h.subtasks ?? []).map((t) =>
+                  t.id === subtaskId ? { ...t, title } : t,
+                ),
+              }
+            : h,
+        ),
+      })),
+    removeSubtask: (habitId, subtaskId) =>
+      setS((p) => ({
+        ...p,
+        habits: p.habits.map((h) =>
+          h.id === habitId
+            ? { ...h, subtasks: (h.subtasks ?? []).filter((t) => t.id !== subtaskId) }
+            : h,
+        ),
+      })),
+
+    stickers: s.stickers ?? [],
+    addSticker: (src) =>
+      setS((p) => ({
+        ...p,
+        stickers: (p.stickers ?? []).includes(src) ? p.stickers : [...(p.stickers ?? []), src],
+      })),
+    removeSticker: (src) =>
+      setS((p) => ({ ...p, stickers: (p.stickers ?? []).filter((x) => x !== src) })),
 
     checks: s.checks,
     isChecked: (habitId, date) => !!s.checks[`${habitId}|${date}`],
