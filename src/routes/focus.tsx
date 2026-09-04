@@ -177,28 +177,48 @@ function FocusPage() {
                   Длительность
                 </div>
                 <Segmented
-                  value={String(f.workMin)}
-                  onChange={(v) => s.configureFocus({ workMin: Number(v) })}
+                  value={[25, 50, 90].includes(f.workMin) ? String(f.workMin) : "custom"}
+                  onChange={(v) => v !== "custom" && s.configureFocus({ workMin: Number(v) })}
                   options={[
                     { value: "25", label: "25" },
                     { value: "50", label: "50" },
                     { value: "90", label: "90" },
+                    { value: "custom", label: "Своя" },
                   ]}
                 />
               </div>
-              <div>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Перерыв
-                </div>
-                <Segmented
-                  value={String(f.breakMin)}
-                  onChange={(v) => s.configureFocus({ breakMin: Number(v) })}
-                  options={[
-                    { value: "5", label: "5 мин" },
-                    { value: "15", label: "15 мин" },
-                  ]}
+
+              <div className="grid grid-cols-2 gap-3">
+                <NumField
+                  label="Фокус, мин"
+                  value={f.workMin}
+                  min={1}
+                  max={240}
+                  onChange={(v) => s.configureFocus({ workMin: v })}
+                />
+                <NumField
+                  label="Перерыв, мин"
+                  value={f.breakMin}
+                  min={1}
+                  max={120}
+                  onChange={(v) => s.configureFocus({ breakMin: v })}
+                />
+                <NumField
+                  label="Длинный, мин"
+                  value={f.longBreakMin}
+                  min={1}
+                  max={180}
+                  onChange={(v) => s.configureFocus({ longBreakMin: v })}
+                />
+                <NumField
+                  label="Циклов до длинного"
+                  value={f.cyclesBeforeLong}
+                  min={1}
+                  max={12}
+                  onChange={(v) => s.configureFocus({ cyclesBeforeLong: v })}
                 />
               </div>
+
               <label className="flex items-center gap-3 rounded-xl border border-border bg-elevated p-3">
                 <input
                   type="checkbox"
@@ -206,8 +226,21 @@ function FocusPage() {
                   onChange={(e) => s.configureFocus({ longBreak: e.target.checked })}
                   className="h-4 w-4 accent-[var(--primary)]"
                 />
-                <span className="text-sm font-medium">Длинный перерыв каждые 4 сессии</span>
+                <span className="text-sm font-medium">
+                  Длинный перерыв каждые {f.cyclesBeforeLong} сессии
+                </span>
               </label>
+
+              <label className="flex items-center gap-3 rounded-xl border border-border bg-elevated p-3">
+                <input
+                  type="checkbox"
+                  checked={f.autoStart}
+                  onChange={(e) => s.configureFocus({ autoStart: e.target.checked })}
+                  className="h-4 w-4 accent-[var(--primary)]"
+                />
+                <span className="text-sm font-medium">Автозапуск следующей сессии</span>
+              </label>
+
 
               <label className="block">
                 <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
