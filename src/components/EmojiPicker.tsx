@@ -114,7 +114,7 @@ export function EmojiPicker({
               autoFocus
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Поиск иконки…"
+              placeholder="Поиск по категориям…"
               className="w-full bg-transparent py-2 text-sm outline-none"
             />
             {q && (
