@@ -90,13 +90,9 @@ export function EmojiPicker({
     reader.readAsDataURL(file);
   };
 
-  const groups = q.trim()
-    ? [
-        {
-          name: "Найдено",
-          items: GROUPS.flatMap((g) => g.items).filter(() => true),
-        },
-      ]
+  const query = q.trim().toLowerCase();
+  const groups = query
+    ? GROUPS.filter((g) => g.name.toLowerCase().includes(query))
     : GROUPS;
 
   return (
@@ -118,7 +114,7 @@ export function EmojiPicker({
               autoFocus
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Поиск иконки…"
+              placeholder="Поиск по категориям…"
               className="w-full bg-transparent py-2 text-sm outline-none"
             />
             {q && (
@@ -157,9 +153,7 @@ export function EmojiPicker({
             )}
 
             {groups.map((g) => {
-              const items = q.trim()
-                ? g.items
-                : g.items;
+              const items = g.items;
               return (
                 <div key={g.name} className="mb-2">
                   <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
