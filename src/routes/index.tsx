@@ -453,7 +453,7 @@ function RatingModal({
   onSave,
 }: {
   date: string;
-  initial?: DayRating;
+  initial?: DayRating | undefined;
   onClose: () => void;
   onSave: (r: DayRating) => void;
 }) {
@@ -464,7 +464,7 @@ function RatingModal({
 
   return (
     <Modal
-      title={`Оценка дня · ${dt.getDate()} ${MONTHS_RU[dt.getMonth()].toLowerCase()}`}
+      title={`Оценка дня · ${dt.getDate()} ${(MONTHS_RU[dt.getMonth()] ?? "").toLowerCase()}`}
       onClose={onClose}
     >
       <Scale label="настроение" value={mood} onChange={setMood} />
