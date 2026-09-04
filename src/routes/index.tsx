@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import {
   Check,
   ChevronDown,
@@ -174,8 +174,8 @@ function TrackerPage() {
                   const doneSubs = subs.filter((t) => t.done).length;
                   const open = !!expanded[h.id];
                   return (
-                    <>
-                      <tr key={h.id} className="group border-b border-border/70 hover:bg-muted/30">
+                    <Fragment key={h.id}>
+                      <tr className="group border-b border-border/70 hover:bg-muted/30">
                         <td className="sticky left-0 z-10 bg-card px-2 py-1.5 group-hover:bg-muted/30">
                           <div className="flex items-center gap-1.5">
                             <button
@@ -254,7 +254,7 @@ function TrackerPage() {
                       </tr>
 
                       {open && (
-                        <tr key={h.id + "-subs"} className="border-b border-border/70 bg-elevated/40">
+                        <tr className="border-b border-border/70 bg-elevated/40">
                           <td
                             className="sticky left-0 z-10 bg-elevated/80 px-2 py-2"
                             colSpan={1}
@@ -264,7 +264,7 @@ function TrackerPage() {
                           <td colSpan={days.length + 1} />
                         </tr>
                       )}
-                    </>
+                    </Fragment>
                   );
                 })}
 
